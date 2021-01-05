@@ -15,8 +15,10 @@
 int
 main (int argc, char *argv[])
 {
-  GtkWidget *Formulaire;
-  GtkWidget *modifier;
+  GtkWidget *Ouvrier;
+  GtkWidget *aj;
+  GtkWidget *ms;
+  GtkWidget *abse;
 
 #ifdef ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
@@ -34,8 +36,14 @@ main (int argc, char *argv[])
    * (except popup menus), just so that you see something after building
    * the project. Delete any components that you don't want shown initially.
    */
-  Formulaire = create_Formulaire ();
-  gtk_widget_show (Formulaire);
+  Ouvrier = create_Ouvrier ();
+  gtk_widget_show (Ouvrier);
+  /*aj = create_aj ();
+  gtk_widget_show (aj);
+  ms = create_ms ();
+  gtk_widget_show (ms);
+  abse <= create_abse ();
+  gtk_widget_show (abse);*/
 
   gtk_main ();
   return 0;
