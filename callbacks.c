@@ -2,350 +2,234 @@
 #  include <config.h>
 #endif
 
-
+#include <gtk/gtk.h>
 
 #include "callbacks.h"
 #include "interface.h"
+#include "equip.h"
 #include "support.h"
-#include"tree_ouss.h"
-#include"CRUD_OUSS.h"
-GtkTreeSelection *selection1;
-
-void
-on_AcceuilGestion_clicked              (GtkButton       *button,
-                                        gpointer         user_data)
-{
-/*preparation du treeView*/
-GtkWidget *p;
-gtk_widget_hide (acceuil);
-gestion = create_gestion ();
-p=lookup_widget(gestion,"treeviewho2");
-Affichertroupeaux(p,"troupeaux.txt");
-gtk_widget_show (gestion);
-}
+#include <string.h>
 
 
-void
-on_Ajoutertroupeaux_clicked               (GtkButton       *button,
-                                        gpointer         user_data)
-{
- troupeaux t;
-GtkWidget *ousssexe;
-GtkWidget *oussId;
-GtkWidget *ousstype;
-GtkWidget *oussjour;
-GtkWidget *oussmois;
-GtkWidget *oussannee;
-GtkWidget *labelId;
-GtkWidget *labelsexe;
-GtkWidget *labelType;
-GtkWidget *labelDate;
-GtkWidget *existe;
-GtkWidget* success;
-int b=1;
-char str[100];
-
-
-oussId=lookup_widget(gestion,"entryho5");
-ousssexe=lookup_widget(gestion,"comboboxho2");
-ousstype=lookup_widget(gestion,"comboboxho1");
-oussjour=lookup_widget(gestion,"spinbuttonho1");
-oussmois=lookup_widget(gestion,"spinbuttonho2");
-oussannee=lookup_widget(gestion,"spinbuttonho3");
-
-
-labelId=lookup_widget(gestion,"labelho13");
-labelsexe=lookup_widget(gestion,"labelho7");
-labelType=lookup_widget(gestion,"labelho8");
-labelDate=lookup_widget(gestion,"labelho9");
-
-existe=lookup_widget(gestion,"labelho34");
-success=lookup_widget(gestion,"labelho35");
-        strcpy(t.id,gtk_entry_get_text(GTK_ENTRY(oussId) ) );
-        strcpy(t.sexe,gtk_combo_box_get_active_text(GTK_COMBO_BOX(ousssexe) ) );
-        strcpy(t.type,gtk_combo_box_get_active_text(GTK_COMBO_BOX(ousstype) ) );
-strcpy(str,gtk_entry_get_text(GTK_ENTRY(oussjour)));strcat(str,"/");strcat(str,gtk_entry_get_text(GTK_ENTRY(oussmois)));strcat(str,"/");strcat(str,gtk_entry_get_text(GTK_ENTRY(oussannee)));
-strcpy(t.date,str);
-       
-
- gtk_widget_hide (success);
-// controle saisie
-if(strcmp(t.id,"")==0){
-		  gtk_widget_show (labelId);
-b=0;
-}
-else {
-		  gtk_widget_hide(labelId);
-}
-
-if(strcmp(t.sexe,"")==0){
-		  gtk_widget_show (labelsexe);
-b=0;
-}
-else {
-		  gtk_widget_hide(labelsexe);
-}
-if(strcmp(t.type,"")==0){
-		  gtk_widget_show (labelType);
-b=0;
-}
-else {
-		  gtk_widget_hide(labelType);
-}
-if(strcmp(t.date,"")==0){
-		  gtk_widget_show (labelDate);
-b=0;
-}
-else {
-		  gtk_widget_hide(labelDate);
-}
-
-
-
-if(b==1){
-
-        if(exist_troupeaux(t.id)==1)
-        {
-
-				  gtk_widget_show (existe);
-        }
-        else {
-						  gtk_widget_hide (existe);
-                ajouter_troupeaux(t);
-
-						  gtk_widget_show (success);
-        }
-//mise a jour du treeView
-        GtkWidget* p=lookup_widget(gestion,"treeviewho2");
-
-        Affichertroupeaux(p,"troupeaux.txt");
-}
-
-}
+GtkWidget *eqag;
+GtkWidget *treeaff;
+GtkWidget *eg;
+GtkWidget *output;
 
 
 
 
 void
-on_Modifiertroupeaux_clicked              (GtkButton       *button,
+on_actaff_clicked                      (GtkWidget       *objet,
                                         gpointer         user_data)
 {
-       	 troupeaux t;
-    gchar *Id;
-    gchar *sexe;
-    gchar *Type;
-    gchar *date;
-   GtkTreeModel     *model;
-    GtkTreeIter iter;
-       if (gtk_tree_selection_get_selected(selection1, &model, &iter))
-        {
-            gtk_tree_model_get (model,&iter,0,&Id,1,&sexe,2,&Type,3,&date,-1);//recuperer les information de la ligne selectionneé
-            supprimer_troupeaux(Id);
+eqag=lookup_widget(objet, "equipement");
+gtk_widget_destroy(eqag);
+eqag=create_equipement();
+gtk_widget_show(eqag);
 }
-
-        strcpy(t.id,gtk_label_get_text(GTK_LABEL(lookup_widget(gestion,"labelho20"))));
-        strcpy(t.sexe,gtk_entry_get_text(GTK_ENTRY(lookup_widget(gestion,"entryho6"))));
-        strcpy(t.type,gtk_entry_get_text(GTK_ENTRY(lookup_widget(gestion,"entryho7"))));
-        strcpy(t.date,gtk_entry_get_text(GTK_ENTRY(lookup_widget(gestion,"entryho9"))));
-ajouter_troupeaux(t);
-//mise ajour du tree view 
-        Affichertroupeaux(lookup_widget(gestion,"treeview1"),"troupeaux.txt");
-	gtk_widget_show(lookup_widget(gestion,"labelho37"));
-        GtkWidget *p=lookup_widget(gestion,"treeviewho2");
-        Affichertroupeaux(p,"troupeaux.txt");
-}
-
-
-
 
 
 void
-on_cherchertroupeaux_clicked              (GtkButton       *button,
+on_marq_clicked                        (GtkButton       *button,
                                         gpointer         user_data)
 {
-GtkWidget *p1;
-GtkWidget *entry;
-GtkWidget *labelid;
-GtkWidget *nbResultat;
-GtkWidget *message;
-char id[30];
-char chnb[30];
-int b=0,nb; //b=0  entry  cherche vide 
-entry=lookup_widget(gestion,"entryho10");
-labelid=lookup_widget(gestion,"labelho28");
-p1=lookup_widget(gestion,"treeviewho2");
-strcpy(id,gtk_entry_get_text(GTK_ENTRY(entry)));
 
-if(strcmp(id,"")==0){
-  gtk_widget_show (labelid);b=0;
-}else{
-b=1;
-gtk_widget_hide (labelid);}
+}
 
-if(b==0)
-    {return;
-    }
-    else
-    {
 
-nb=Cherchertroupeaux(p1,"troupeaux.txt",id);
-// afficher le sexebre de resultats obtenue par la recherche
+void
+on_aff_clicked                         (GtkWidget       *objet_graphique,
+                                        gpointer         user_data)
+{
+eqag=lookup_widget(objet_graphique,"equipement");
+eg=lookup_widget(eqag,"eg");
+treeaff=lookup_widget(eqag,"treeaff");
+afficher_equipement(treeaff);
+}
+
+
+void
+on_ajact_clicked                       (GtkWidget       *objet,
+                                        gpointer         user_data)
+{
+eqag=lookup_widget(objet, "equipement");
+gtk_widget_destroy(eqag);
+eqag=create_equipement();
+gtk_widget_show(eqag);
+}
+
+
+void
+on_ajaj_clicked                        (GtkWidget       *objet,
+                                        gpointer         user_data)
+{
+equipement e;
+
+GtkWidget *ref, *nom, *marque, *jour, *mois, *annee, *jourm, *moism, *anneem, *bon, *def;
+
+eqag=lookup_widget(objet, "equipement");
+
+ref=lookup_widget(objet, "eajref");
+nom=lookup_widget(objet, "eajn");
+marque=lookup_widget(objet, "combobox4");
+jour=lookup_widget(objet, "spinbuttonajaj");
+mois=lookup_widget(objet, "spinbuttonajam");
+annee=lookup_widget(objet, "spinbuttonajaa");
+jour=lookup_widget(objet, "spinbuttonajmj");
+mois=lookup_widget(objet, "spinbuttonajmm");
+annee=lookup_widget(objet, "spinbuttonajma");
+bon=lookup_widget(objet, "radiobuttonajeb");
+def=lookup_widget(objet, "radiobuttonajed");
+
+strcpy(e.ref,gtk_entry_get_text(GTK_ENTRY(ref)));
+strcpy(e.nom,gtk_entry_get_text(GTK_ENTRY(nom)));
+strcpy(e.marque,gtk_combo_box_get_active_text(GTK_COMBO_BOX(marque) ) );
+
+e.jour=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(jour));
+e.mois=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(mois));
+e.annee=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(annee));
+e.jourm=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(jourm));
+e.moism=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(moism));
+e.anneem=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(anneem));
+
+if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(bon)))
+	{strcpy(e.etat,"bonne_etat");}
+else	{strcpy(e.etat,"defectueux");}
+
+ajouter_equipement(e);
+}
+
+
+void
+on_mschr_clicked                       (GtkWidget       *objet,
+                                        gpointer         user_data)
+{
+GtkWidget *emsref, *nom, *marque, *jour, *mois, *annee, *jourm, *moism, *anneem, *etat;
+  equipement e;
+  char ref[9] ;
  
 
-sprintf(chnb,"%d",nb);        //conversion int==> chaine car la fonction gtk_label_set_text naccepte que chaine
-nbResultat=lookup_widget(gestion,"labelho27");
-message=lookup_widget(gestion,"labelho26");
-gtk_label_set_text(GTK_LABEL(nbResultat),chnb);
-
-gtk_widget_show (nbResultat);
-gtk_widget_show (message);
-}
-
-}
-
-
-void
-on_GestionAcceuil_clicked              (GtkButton       *button,
-                                        gpointer         user_data)
-{
-gtk_widget_show (acceuil);
-gtk_widget_destroy (gestion);
-
-}
-
-
-
-
-void
-on_bmodifier_clicked                   (GtkButton       *button,
-                                        gpointer         user_data)
-{
-        gchar *id;
-        gchar *sexe;
-        gchar *type;
-        gchar *date;
   
-        GtkTreeModel     *model;
-        GtkTreeIter iter;
-        if (gtk_tree_selection_get_selected(selection1, &model, &iter))
-        {
-
-        gtk_widget_hide(lookup_widget(gestion,"labelho37"));//cacher label modifier avec succees
-                gtk_tree_model_get (model,&iter,0,&id,1,&sexe,2,&type,3,&date,-1);//recuperer les information de la ligne selectionneé
-        // //remplir les champs de entry
-                gtk_entry_set_text(GTK_ENTRY(lookup_widget(gestion,"entryho6")),sexe);
-                gtk_entry_set_text(GTK_ENTRY(lookup_widget(gestion,"entryho7")),type);
-                gtk_entry_set_text(GTK_ENTRY(lookup_widget(gestion,"entryho9")),date);
-
-
-
-                GtkWidget* msgId=lookup_widget(gestion,"labelho20");
-                GtkWidget* msg1=lookup_widget(gestion,"labelho36");
-                gtk_label_set_text(GTK_LABEL(msgId),id);
-                gtk_widget_show(msgId);
-                gtk_widget_show(msg1);
-                gtk_widget_show(lookup_widget(gestion,"button4"));//afficher le bouton modifier
-                gtk_notebook_prev_page(GTK_NOTEBOOK(lookup_widget(gestion,"notebook1")));//redirection vers la page precedente
-       
-        }
-
-}
-
-
-void
-on_bsupprimer_clicked                  (GtkButton       *button,
-                                        gpointer         user_data)
-{
-    gchar *Id;
-    gchar *sexe;
-    gchar *Type;
-    gchar *date;
-troupeaux t;
+  emsref=lookup_widget(objet, "emsref");
+  strcpy(ref,gtk_entry_get_text(GTK_ENTRY(emsref)));
   
-    GtkTreeModel     *model;
-    GtkTreeIter iter;
-       if (gtk_tree_selection_get_selected(selection1, &model, &iter))
-        {
-            gtk_tree_model_get (model,&iter,0,&Id,1,&sexe,2,&Type,3,&date,-1);//recuperer les information de la ligne selectionneé
-            supprimer_troupeaux(Id);
-            Affichertroupeaux(lookup_widget(gestion,"treeviewho2"),"troupeaux.txt");        
-        }
+  e=rechercher(ref);
+
+  FILE* f;
+  f=fopen("equip.txt","r");
+ 
+  nom=lookup_widget (objet,"emsn");
+  marque=lookup_widget (objet,"emsmar");
+  jour=lookup_widget (objet,"spinbuttonmsaj");
+  mois=lookup_widget (objet,"spinbuttonmsam");
+  annee=lookup_widget (objet,"spinbuttonmsaa");
+  jourm=lookup_widget (objet,"spinbuttonmsmj");
+  moism=lookup_widget (objet,"spinbuttonmsmm");
+  anneem=lookup_widget (objet,"spinbuttonmsma");
+  etat=lookup_widget (objet,"emse");
+  gtk_entry_set_text (GTK_ENTRY(emsref),e.ref);
+  gtk_entry_set_text (GTK_ENTRY(nom),e.nom);
+  gtk_combo_box_set_active(GTK_COMBO_BOX(marque),e.marque);
+  gtk_spin_button_set_value(GTK_SPIN_BUTTON(jour),e.jour);
+  gtk_spin_button_set_value(GTK_SPIN_BUTTON(mois),e.mois);
+  gtk_spin_button_set_value(GTK_SPIN_BUTTON(annee),e.annee);
+  gtk_spin_button_set_value(GTK_SPIN_BUTTON(jourm),e.jourm);
+  gtk_spin_button_set_value(GTK_SPIN_BUTTON(moism),e.moism);
+  gtk_spin_button_set_value(GTK_SPIN_BUTTON(anneem),e.anneem);
+  gtk_entry_set_text (GTK_ENTRY(etat),e.etat);
+  
+  
+  fclose(f);
 }
 
 
 void
-on_bafficher12_clicked                 (GtkButton       *button,
+on_msmod_clicked                       (GtkWidget       *objet,
                                         gpointer         user_data)
 {
-        GtkWidget *p=lookup_widget(gestion,"treeviewho2");
-        Affichertroupeaux(p,"troupeaux.txt");
-}
-
-
-void
-on_treeviewho2_row_activated           (GtkTreeView     *treeview,
-                                        GtkTreePath     *path,
-                                        GtkTreeViewColumn *column,
-                                        gpointer         user_data)//signale du treeView (Double click)
-{
-    gchar *id;
-        gchar *sexe;
-        gchar *type;
-        gchar *date;
-      
-        GtkTreeModel     *model;
-        GtkTreeIter iter;
-        GtkWidget *p=lookup_widget(gestion,"treeviewho2");
-        selection1 = gtk_tree_view_get_selection(GTK_TREE_VIEW(p));
-       
-
-
-}
-
-
-
-
-void
-on_button9_clicked                     (GtkButton       *button,
-                                        gpointer         user_data)
-{
-GtkWidget *P;
-GtkWidget *Entry;
-GtkWidget *labeltyp;
-GtkWidget *typResultat;
-GtkWidget *Message;
-char type[30];
-char chtyp[30];
-int b=0,typ; //b=0  entry  cherche vide 
-Entry=lookup_widget(gestion,"entryho11");
-labeltyp=lookup_widget(gestion,"labelho65");
-P=lookup_widget(gestion,"treeviewho2");
-strcpy(type,gtk_entry_get_text(GTK_ENTRY(Entry)));
-
-if(strcmp(type,"")==0){
-  gtk_widget_show (labeltyp);b=0;
-}else{
-b=1;
-gtk_widget_hide (labeltyp);}
-
-if(b==0)
-    {return;
-    }
-    else
-    {
-
-typ=cherchertroupeaux(P,"troupeaux.txt",type);
-// afficher le sexebre de resultats obtenue par la recherche
+GtkWidget *emsref, *nom, *marque, *jour, *mois, *annee, *jourm, *moism, *anneem, *etat ,*message;
+  equipement e1;
+  char ref[9] ;
  
 
-sprintf(chtyp,"%d",typ);        //conversion int==> chaine car la fonction gtk_label_set_text naccepte que chaine
-typResultat=lookup_widget(gestion,"labelho64");
-Message=lookup_widget(gestion,"labelho63");
-gtk_label_set_text(GTK_LABEL(typResultat),chtyp);
+  
+  emsref=lookup_widget(objet, "emsref");
+  strcpy(ref,gtk_entry_get_text(GTK_ENTRY(emsref)));
+  
+  e1=rechercher(ref);
 
-gtk_widget_show (typResultat);
-gtk_widget_show (Message);
-}
+ message=lookup_widget(objet,"label26");
+ gtk_widget_show (message);
+
+  FILE* f;
+  f=fopen("equip.txt","r");
+ 
+  nom=lookup_widget (objet,"emsn");
+  marque=lookup_widget (objet,"emsmar");
+  jour=lookup_widget (objet,"spinbuttonmsaj");
+  mois=lookup_widget (objet,"spinbuttonmsam");
+  annee=lookup_widget (objet,"spinbuttonmsaa");
+  jourm=lookup_widget (objet,"spinbuttonmsmj");
+  moism=lookup_widget (objet,"spinbuttonmsmm");
+  anneem=lookup_widget (objet,"spinbuttonmsma");
+  etat=lookup_widget (objet,"emse");
+  
+strcpy(e1.ref,gtk_entry_get_text(GTK_ENTRY(emsref)));
+strcpy(e1.nom,gtk_entry_get_text(GTK_ENTRY(nom)));
+strcpy(e1.marque,gtk_entry_get_text(GTK_ENTRY(marque)));
+strcpy(e1.etat,gtk_entry_get_text(GTK_ENTRY(etat)));
+
+
+
+e1.jour=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(jour));
+e1.mois=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(mois));
+e1.annee=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(annee));
+e1.jourm=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(jourm));
+e1.moism=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(moism));
+e1.anneem=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(anneem));
+
+	
+
+
+  modifier_equipement(e1);
+  fclose(f);
 }
 
+
+void
+on_mssup_clicked                       (GtkWidget       *objet,
+                                        gpointer         user_data)
+{
+GtkWidget *nom, *emsref, *marque, *jour, *mois, *annee, *jourm, *moism, *anneem, *etat, *outpout, *message;
+  equipement e;
+char ref[9];
+int suppri;
+  FILE* f;
+
+  emsref=lookup_widget(objet, "emsref");
+  strcpy(ref,gtk_entry_get_text(GTK_ENTRY(emsref)));
+   
+   outpout=lookup_widget (objet,"err");
+   suppri=supprimer_equipement(e,ref);
+  if (suppri==1)
+   {
+  gtk_label_set_text (GTK_LABEL(outpout),"equipement supprimé");
+	/*printf("equipement supprimé");*/
+	message=lookup_widget(objet,"label27");
+ 	gtk_widget_show (message);
+   }
+
+}
+
+
+void
+on_msact_clicked                      (GtkWidget       *objet,
+                                        gpointer         user_data)
+{
+eqag=lookup_widget(objet, "equipement");
+gtk_widget_destroy(eqag);
+eqag=create_equipement();
+gtk_widget_show(eqag);
+}
 

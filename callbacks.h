@@ -1,58 +1,38 @@
 #include <gtk/gtk.h>
 
 
-
-
 void
-on_AcceuilGestion_clicked              (GtkButton       *button,
-                                        gpointer         user_data);
-
-
-void
-on_GestionAcceuil_clicked              (GtkButton       *button,
-                                        gpointer         user_data);
-
-
-void
-on_bmodifier_clicked                   (GtkButton       *button,
+on_actaff_clicked                      (GtkWidget       *objet,
                                         gpointer         user_data);
 
 void
-on_bsupprimer_clicked                  (GtkButton       *button,
+on_marq_clicked                        (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-on_bafficher12_clicked                 (GtkButton       *button,
+on_aff_clicked                         (GtkWidget       *objet_graphique,
                                         gpointer         user_data);
 
 void
-on_treeview2_row_activated             (GtkTreeView     *treeview,
-                                        GtkTreePath     *path,
-                                        GtkTreeViewColumn *column,
+on_ajact_clicked                       (GtkWidget       *objet,
                                         gpointer         user_data);
 
 void
-on_cherchertroupeaux_clicked          (GtkButton       *button,
-                                        gpointer         user_data);
-
-
-
-void
-on_Ajoutertroupeaux_clicked            (GtkButton       *button,
+on_ajaj_clicked                        (GtkWidget       *objet,
                                         gpointer         user_data);
 
 void
-on_Modifiertroupeaux_clicked           (GtkButton       *button,
-                                        gpointer         user_data);
-
-
-
-void
-on_button9_clicked                     (GtkButton       *button,
+on_mschr_clicked                       (GtkWidget       *objet,
                                         gpointer         user_data);
 
 void
-on_treeviewho2_row_activated           (GtkTreeView     *treeview,
-                                        GtkTreePath     *path,
-                                        GtkTreeViewColumn *column,
+on_msmod_clicked                       (GtkWidget       *objet,
+                                        gpointer         user_data);
+
+void
+on_mssup_clicked                       (GtkWidget       *objet,
+                                        gpointer         user_data);
+
+void
+on_msact_clicked                       (GtkWidget       *objet,
                                         gpointer         user_data);
