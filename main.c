@@ -5,20 +5,19 @@
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
+
 #endif
-
 #include <gtk/gtk.h>
-
+#  include <stdio.h>
 #include "interface.h"
 #include "support.h"
 
+  GtkWidget *acceuil;
+  GtkWidget *gestion;
 int
 main (int argc, char *argv[])
 {
-  GtkWidget *Ouvrier;
-  GtkWidget *aj;
-  GtkWidget *ms;
-  GtkWidget *abse;
+
 
 #ifdef ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
@@ -31,19 +30,10 @@ main (int argc, char *argv[])
 
   add_pixmap_directory (PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
 
-  /*
-   * The following code was added by Glade to create one of each component
-   * (except popup menus), just so that you see something after building
-   * the project. Delete any components that you don't want shown initially.
-   */
-  Ouvrier = create_Ouvrier ();
-  gtk_widget_show (Ouvrier);
-  /*aj = create_aj ();
-  gtk_widget_show (aj);
-  ms = create_ms ();
-  gtk_widget_show (ms);
-  abse <= create_abse ();
-  gtk_widget_show (abse);*/
+
+  gestion = create_gestion ();
+  gtk_widget_show (gestion);
+ 
 
   gtk_main ();
   return 0;

@@ -1,14 +1,5 @@
 #include <gtk/gtk.h>
-  GtkWidget *acceuilp;
-  GtkWidget *gestionp;
-typedef struct plante plante ;
-struct plante{
-char id[30];
-char saison[30];
-char type[30];
-char date[30];
-char prix[9];
-};
+
 
 
 
@@ -41,20 +32,27 @@ on_treeview2_row_activated             (GtkTreeView     *treeview,
                                         gpointer         user_data);
 
 void
-on_chercherplante_clicked          (GtkButton       *button,
+on_cherchertroupeaux_clicked          (GtkButton       *button,
                                         gpointer         user_data);
 
 
 
 void
-on_Ajouterplante_clicked            (GtkButton       *button,
+on_Ajoutertroupeaux_clicked            (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-on_Modifierplante_clicked           (GtkButton       *button,
+on_Modifiertroupeaux_clicked           (GtkButton       *button,
                                         gpointer         user_data);
 
 
+
 void
-on_Ajouterplante_clicked               (GtkButton       *button,
+on_button9_clicked                     (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_treeviewho2_row_activated           (GtkTreeView     *treeview,
+                                        GtkTreePath     *path,
+                                        GtkTreeViewColumn *column,
                                         gpointer         user_data);

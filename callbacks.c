@@ -7,8 +7,8 @@
 #include "callbacks.h"
 #include "interface.h"
 #include "support.h"
-#include"tree.h"
-#include"CRUD.h"
+#include"tree_ouss.h"
+#include"CRUD_OUSS.h"
 GtkTreeSelection *selection1;
 
 void
@@ -17,62 +17,56 @@ on_AcceuilGestion_clicked              (GtkButton       *button,
 {
 /*preparation du treeView*/
 GtkWidget *p;
-gtk_widget_hide (acceuilp);
-gestionp = create_gestionp ();
-p=lookup_widget(gestionp,"treeview2p");
-Afficherplante(p,"plante.txt");
-gtk_widget_show (gestionp);
+gtk_widget_hide (acceuil);
+gestion = create_gestion ();
+p=lookup_widget(gestion,"treeviewho2");
+Affichertroupeaux(p,"troupeaux.txt");
+gtk_widget_show (gestion);
 }
 
 
 void
-on_Ajouterplante_clicked               (GtkButton       *button,
+on_Ajoutertroupeaux_clicked               (GtkButton       *button,
                                         gpointer         user_data)
 {
- plante t;
-GtkWidget *entrysaison;
-GtkWidget *entryId;
-GtkWidget *entrytype;
-GtkWidget *entryMois;
-GtkWidget *entryJour;
-GtkWidget *entryAnnee;
-GtkWidget *entryPrix;
+ troupeaux t;
+GtkWidget *ousssexe;
+GtkWidget *oussId;
+GtkWidget *ousstype;
+GtkWidget *oussjour;
+GtkWidget *oussmois;
+GtkWidget *oussannee;
 GtkWidget *labelId;
-GtkWidget *labelsaison;
+GtkWidget *labelsexe;
 GtkWidget *labelType;
 GtkWidget *labelDate;
-GtkWidget *labelPrix;
 GtkWidget *existe;
 GtkWidget* success;
 int b=1;
 char str[100];
 
 
-
-entryId=lookup_widget(gestionp,"entry5p");
-entrysaison=lookup_widget(gestionp,"comboboxentry1p");
-entrytype=lookup_widget(gestionp,"entry2p");
-
-
-entryJour=lookup_widget(gestionp,"spinbutton1p");
-entryMois=lookup_widget(gestionp,"spinbutton2p");
-entryAnnee=lookup_widget(gestionp,"spinbutton3p");
+oussId=lookup_widget(gestion,"entryho5");
+ousssexe=lookup_widget(gestion,"comboboxho2");
+ousstype=lookup_widget(gestion,"comboboxho1");
+oussjour=lookup_widget(gestion,"spinbuttonho1");
+oussmois=lookup_widget(gestion,"spinbuttonho2");
+oussannee=lookup_widget(gestion,"spinbuttonho3");
 
 
-entryPrix=lookup_widget(gestionp,"entry3p");
-labelId=lookup_widget(gestionp,"label13p");
-labelsaison=lookup_widget(gestionp,"label7p");
-labelType=lookup_widget(gestionp,"label8p");
-labelDate=lookup_widget(gestionp,"label9p");
-labelPrix=lookup_widget(gestionp,"label10p");
-existe=lookup_widget(gestionp,"label34p");
-success=lookup_widget(gestionp,"label35p");
-        strcpy(t.id,gtk_entry_get_text(GTK_ENTRY(entryId) ) );
-strcpy(t.saison,gtk_combo_box_get_active_text(GTK_COMBO_BOX(entrysaison) ) );
-        strcpy(t.type,gtk_entry_get_text(GTK_ENTRY(entrytype) ) );
-strcpy(str,gtk_entry_get_text(GTK_ENTRY(entryJour)));strcat(str,"/");strcat(str,gtk_entry_get_text(GTK_ENTRY(entryMois)));strcat(str,"/");strcat(str,gtk_entry_get_text(GTK_ENTRY(entryAnnee)));
+labelId=lookup_widget(gestion,"labelho13");
+labelsexe=lookup_widget(gestion,"labelho7");
+labelType=lookup_widget(gestion,"labelho8");
+labelDate=lookup_widget(gestion,"labelho9");
+
+existe=lookup_widget(gestion,"labelho34");
+success=lookup_widget(gestion,"labelho35");
+        strcpy(t.id,gtk_entry_get_text(GTK_ENTRY(oussId) ) );
+        strcpy(t.sexe,gtk_combo_box_get_active_text(GTK_COMBO_BOX(ousssexe) ) );
+        strcpy(t.type,gtk_combo_box_get_active_text(GTK_COMBO_BOX(ousstype) ) );
+strcpy(str,gtk_entry_get_text(GTK_ENTRY(oussjour)));strcat(str,"/");strcat(str,gtk_entry_get_text(GTK_ENTRY(oussmois)));strcat(str,"/");strcat(str,gtk_entry_get_text(GTK_ENTRY(oussannee)));
 strcpy(t.date,str);
-        strcpy(t.prix,gtk_entry_get_text(GTK_ENTRY(entryPrix) ) );
+       
 
  gtk_widget_hide (success);
 // controle saisie
@@ -84,12 +78,12 @@ else {
 		  gtk_widget_hide(labelId);
 }
 
-if(strcmp(t.saison,"")==0){
-		  gtk_widget_show (labelsaison);
+if(strcmp(t.sexe,"")==0){
+		  gtk_widget_show (labelsexe);
 b=0;
 }
 else {
-		  gtk_widget_hide(labelsaison);
+		  gtk_widget_hide(labelsexe);
 }
 if(strcmp(t.type,"")==0){
 		  gtk_widget_show (labelType);
@@ -105,33 +99,26 @@ b=0;
 else {
 		  gtk_widget_hide(labelDate);
 }
-if(strcmp(t.prix,"")==0){
-		  gtk_widget_show (labelPrix);
-b=0;
-}
-else {
-		  gtk_widget_hide(labelPrix);
-}
 
 
 
 if(b==1){
 
-        if(exist_plante(t.id)==1)
+        if(exist_troupeaux(t.id)==1)
         {
 
 				  gtk_widget_show (existe);
         }
         else {
 						  gtk_widget_hide (existe);
-                ajouter_plante(t);
+                ajouter_troupeaux(t);
 
 						  gtk_widget_show (success);
         }
 //mise a jour du treeView
-        GtkWidget* p=lookup_widget(gestionp,"treeview2p");
+        GtkWidget* p=lookup_widget(gestion,"treeviewho2");
 
-        Afficherplante(p,"plante.txt");
+        Affichertroupeaux(p,"troupeaux.txt");
 }
 
 }
@@ -140,42 +127,32 @@ if(b==1){
 
 
 void
-on_Modifierplante_clicked              (GtkButton       *button,
+on_Modifiertroupeaux_clicked              (GtkButton       *button,
                                         gpointer         user_data)
 {
-       	 plante t;
-
-
-
-
-	
-	gchar *id;
-    gchar *saison;
-    gchar *type;
+       	 troupeaux t;
+    gchar *Id;
+    gchar *sexe;
+    gchar *Type;
     gchar *date;
-    gchar *prix;
    GtkTreeModel     *model;
     GtkTreeIter iter;
        if (gtk_tree_selection_get_selected(selection1, &model, &iter))
         {
-            gtk_tree_model_get (model,&iter,0,&id,1,&saison,2,&type,3,&date,4,&prix,-1);//recuperer les information de la ligne selectionneé
-            supprimer_plante(id);
+            gtk_tree_model_get (model,&iter,0,&Id,1,&sexe,2,&Type,3,&date,-1);//recuperer les information de la ligne selectionneé
+            supprimer_troupeaux(Id);
 }
 
-
-
-
-        strcpy(t.id,gtk_label_get_text(GTK_LABEL(lookup_widget(gestionp,"label20p"))));
-        strcpy(t.saison,gtk_entry_get_text(GTK_ENTRY(lookup_widget(gestionp,"entry6p"))));
-        strcpy(t.type,gtk_entry_get_text(GTK_ENTRY(lookup_widget(gestionp,"entry7p"))));
-        strcpy(t.date,gtk_entry_get_text(GTK_ENTRY(lookup_widget(gestionp,"entry9p"))));
-        strcpy(t.prix,gtk_entry_get_text(GTK_ENTRY(lookup_widget(gestionp,"entry8p"))));
-        ajouter_plante(t);
+        strcpy(t.id,gtk_label_get_text(GTK_LABEL(lookup_widget(gestion,"labelho20"))));
+        strcpy(t.sexe,gtk_entry_get_text(GTK_ENTRY(lookup_widget(gestion,"entryho6"))));
+        strcpy(t.type,gtk_entry_get_text(GTK_ENTRY(lookup_widget(gestion,"entryho7"))));
+        strcpy(t.date,gtk_entry_get_text(GTK_ENTRY(lookup_widget(gestion,"entryho9"))));
+ajouter_troupeaux(t);
 //mise ajour du tree view 
-        Afficherplante(lookup_widget(gestionp,"treeview1p"),"plante.txt");
-	gtk_widget_show(lookup_widget(gestionp,"label37p"));
-        GtkWidget *p=lookup_widget(gestionp,"treeview2p");
-        Afficherplante(p,"plante.txt");
+        Affichertroupeaux(lookup_widget(gestion,"treeview1"),"troupeaux.txt");
+	gtk_widget_show(lookup_widget(gestion,"labelho37"));
+        GtkWidget *p=lookup_widget(gestion,"treeviewho2");
+        Affichertroupeaux(p,"troupeaux.txt");
 }
 
 
@@ -183,7 +160,7 @@ on_Modifierplante_clicked              (GtkButton       *button,
 
 
 void
-on_chercherplante_clicked              (GtkButton       *button,
+on_cherchertroupeaux_clicked              (GtkButton       *button,
                                         gpointer         user_data)
 {
 GtkWidget *p1;
@@ -194,9 +171,9 @@ GtkWidget *message;
 char id[30];
 char chnb[30];
 int b=0,nb; //b=0  entry  cherche vide 
-entry=lookup_widget(gestionp,"entry10p");
-labelid=lookup_widget(gestionp,"label28p");
-p1=lookup_widget(gestionp,"treeview2p");
+entry=lookup_widget(gestion,"entryho10");
+labelid=lookup_widget(gestion,"labelho28");
+p1=lookup_widget(gestion,"treeviewho2");
 strcpy(id,gtk_entry_get_text(GTK_ENTRY(entry)));
 
 if(strcmp(id,"")==0){
@@ -211,13 +188,13 @@ if(b==0)
     else
     {
 
-nb=Chercherplante(p1,"plante.txt",id);
-// afficher le saisonbre de resultats obtenue par la recherche
+nb=Cherchertroupeaux(p1,"troupeaux.txt",id);
+// afficher le sexebre de resultats obtenue par la recherche
  
 
 sprintf(chnb,"%d",nb);        //conversion int==> chaine car la fonction gtk_label_set_text naccepte que chaine
-nbResultat=lookup_widget(gestionp,"labelp");
-message=lookup_widget(gestionp,"label26p");
+nbResultat=lookup_widget(gestion,"labelho27");
+message=lookup_widget(gestion,"labelho26");
 gtk_label_set_text(GTK_LABEL(nbResultat),chnb);
 
 gtk_widget_show (nbResultat);
@@ -231,8 +208,8 @@ void
 on_GestionAcceuil_clicked              (GtkButton       *button,
                                         gpointer         user_data)
 {
-gtk_widget_show (acceuilp);
-gtk_widget_destroy (gestionp);
+gtk_widget_show (acceuil);
+gtk_widget_destroy (gestion);
 
 }
 
@@ -244,33 +221,31 @@ on_bmodifier_clicked                   (GtkButton       *button,
                                         gpointer         user_data)
 {
         gchar *id;
-        gchar *saison;
+        gchar *sexe;
         gchar *type;
         gchar *date;
-        gchar *prix;
   
         GtkTreeModel     *model;
         GtkTreeIter iter;
         if (gtk_tree_selection_get_selected(selection1, &model, &iter))
         {
 
-        gtk_widget_hide(lookup_widget(gestionp,"label37p"));//cacher label modifier avec succees
-                gtk_tree_model_get (model,&iter,0,&id,1,&saison,2,&type,3,&date,4,&prix,-1);//recuperer les information de la ligne selectionneé
+        gtk_widget_hide(lookup_widget(gestion,"labelho37"));//cacher label modifier avec succees
+                gtk_tree_model_get (model,&iter,0,&id,1,&sexe,2,&type,3,&date,-1);//recuperer les information de la ligne selectionneé
         // //remplir les champs de entry
-                gtk_entry_set_text(GTK_ENTRY(lookup_widget(gestionp,"entry6p")),saison);
-                gtk_entry_set_text(GTK_ENTRY(lookup_widget(gestionp,"entry7p")),type);
-                gtk_entry_set_text(GTK_ENTRY(lookup_widget(gestionp,"entry9p")),date);
-                gtk_entry_set_text(GTK_ENTRY(lookup_widget(gestionp,"entry8p")),prix);
+                gtk_entry_set_text(GTK_ENTRY(lookup_widget(gestion,"entryho6")),sexe);
+                gtk_entry_set_text(GTK_ENTRY(lookup_widget(gestion,"entryho7")),type);
+                gtk_entry_set_text(GTK_ENTRY(lookup_widget(gestion,"entryho9")),date);
 
 
 
-                GtkWidget* msgId=lookup_widget(gestionp,"label20p");
-                GtkWidget* msg1=lookup_widget(gestionp,"label36p");
+                GtkWidget* msgId=lookup_widget(gestion,"labelho20");
+                GtkWidget* msg1=lookup_widget(gestion,"labelho36");
                 gtk_label_set_text(GTK_LABEL(msgId),id);
                 gtk_widget_show(msgId);
                 gtk_widget_show(msg1);
-                gtk_widget_show(lookup_widget(gestionp,"button4p"));//afficher le bouton modifier
-                gtk_notebook_prev_page(GTK_NOTEBOOK(lookup_widget(gestionp,"notebook1")));//redirection vers la page precedente
+                gtk_widget_show(lookup_widget(gestion,"button4"));//afficher le bouton modifier
+                gtk_notebook_prev_page(GTK_NOTEBOOK(lookup_widget(gestion,"notebook1")));//redirection vers la page precedente
        
         }
 
@@ -282,18 +257,18 @@ on_bsupprimer_clicked                  (GtkButton       *button,
                                         gpointer         user_data)
 {
     gchar *Id;
-    gchar *saison;
+    gchar *sexe;
     gchar *Type;
     gchar *date;
-    gchar *prix;
+troupeaux t;
   
     GtkTreeModel     *model;
     GtkTreeIter iter;
        if (gtk_tree_selection_get_selected(selection1, &model, &iter))
         {
-            gtk_tree_model_get (model,&iter,0,&Id,1,&saison,2,&Type,3,&date,4,&prix,-1);//recuperer les information de la ligne selectionneé
-            supprimer_plante(Id);
-            Afficherplante(lookup_widget(gestionp,"treeview2p"),"plante.txt");        
+            gtk_tree_model_get (model,&iter,0,&Id,1,&sexe,2,&Type,3,&date,-1);//recuperer les information de la ligne selectionneé
+            supprimer_troupeaux(Id);
+            Affichertroupeaux(lookup_widget(gestion,"treeviewho2"),"troupeaux.txt");        
         }
 }
 
@@ -302,26 +277,25 @@ void
 on_bafficher12_clicked                 (GtkButton       *button,
                                         gpointer         user_data)
 {
-        GtkWidget *p=lookup_widget(gestionp,"treeview2p");
-        Afficherplante(p,"plante.txt");
+        GtkWidget *p=lookup_widget(gestion,"treeviewho2");
+        Affichertroupeaux(p,"troupeaux.txt");
 }
 
 
 void
-on_treeview2_row_activated             (GtkTreeView     *treeview,
+on_treeviewho2_row_activated           (GtkTreeView     *treeview,
                                         GtkTreePath     *path,
                                         GtkTreeViewColumn *column,
                                         gpointer         user_data)//signale du treeView (Double click)
 {
     gchar *id;
-        gchar *saison;
+        gchar *sexe;
         gchar *type;
         gchar *date;
-        gchar *prix;
       
         GtkTreeModel     *model;
         GtkTreeIter iter;
-        GtkWidget *p=lookup_widget(gestionp,"treeview2p");
+        GtkWidget *p=lookup_widget(gestion,"treeviewho2");
         selection1 = gtk_tree_view_get_selection(GTK_TREE_VIEW(p));
        
 
@@ -331,7 +305,47 @@ on_treeview2_row_activated             (GtkTreeView     *treeview,
 
 
 
+void
+on_button9_clicked                     (GtkButton       *button,
+                                        gpointer         user_data)
+{
+GtkWidget *P;
+GtkWidget *Entry;
+GtkWidget *labeltyp;
+GtkWidget *typResultat;
+GtkWidget *Message;
+char type[30];
+char chtyp[30];
+int b=0,typ; //b=0  entry  cherche vide 
+Entry=lookup_widget(gestion,"entryho11");
+labeltyp=lookup_widget(gestion,"labelho65");
+P=lookup_widget(gestion,"treeviewho2");
+strcpy(type,gtk_entry_get_text(GTK_ENTRY(Entry)));
 
+if(strcmp(type,"")==0){
+  gtk_widget_show (labeltyp);b=0;
+}else{
+b=1;
+gtk_widget_hide (labeltyp);}
 
+if(b==0)
+    {return;
+    }
+    else
+    {
+
+typ=cherchertroupeaux(P,"troupeaux.txt",type);
+// afficher le sexebre de resultats obtenue par la recherche
+ 
+
+sprintf(chtyp,"%d",typ);        //conversion int==> chaine car la fonction gtk_label_set_text naccepte que chaine
+typResultat=lookup_widget(gestion,"labelho64");
+Message=lookup_widget(gestion,"labelho63");
+gtk_label_set_text(GTK_LABEL(typResultat),chtyp);
+
+gtk_widget_show (typResultat);
+gtk_widget_show (Message);
+}
+}
 
 
